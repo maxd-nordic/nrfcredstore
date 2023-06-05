@@ -40,6 +40,12 @@ class CredStore:
         """
 
         return self.at_client.at_command(f'AT+CFUN={mode}') == []
+    
+    def imei(self):
+        cmd = 'AT+CGSN'
+        response_lines = self.at_client.at_command(cmd)
+
+        return response_lines[0]
 
     def list(self, tag = None, type: CredType = CredType.ANY) -> List[Credential]:
         """List stored credentials

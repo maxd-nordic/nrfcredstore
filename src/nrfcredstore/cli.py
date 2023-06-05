@@ -23,6 +23,9 @@ def parse_args(in_args):
         title='subcommands', dest='subcommand', help='Certificate related commands'
     )
 
+    # add IMEI command
+    subparsers.add_parser('imei', help='Show IMEI of connected device')
+
     # add list command
     list_parser = subparsers.add_parser('list', help='List all keys stored in the modem')
     list_parser.add_argument('--tag', type=int,
@@ -61,7 +64,10 @@ def exec_cmd(args, credstore):
     if args.subcommand:
         credstore.func_mode(FUN_MODE_OFFLINE)
 
-    if args.subcommand == 'list':
+    if args.subcommand == 'imei':
+        print(credstore.imei())
+
+    elif args.subcommand == 'list':
         ct = CredType[args.type]
         if ct != CredType.ANY and args.tag is None:
             raise RuntimeError("Cannot use --type without a --tag.")
